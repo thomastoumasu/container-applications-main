@@ -1,0 +1,8 @@
+services:
+  webs:
+    image: devopsdockeruh/simple-web-service
+    ports:
+      - 8080:8080
+    command: ["server"]
+    container_name: webs
+# docker compose -f Compose22.yaml up

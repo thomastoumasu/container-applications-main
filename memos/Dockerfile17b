@@ -1,0 +1,13 @@
+# Start from this image
+FROM ubuntu:24.04 
+
+# # Execute a command with `/bin/sh -c` prefix.
+RUN apt-get update && apt-get install -y curl
+
+# Use /usr/src/app as our workdir. The following instructions will be executed in this location.
+WORKDIR /usr/src/app/
+
+# Copy the hello.sh file from this location to /usr/src/app/ creating /usr/src/app/hello.sh.
+COPY --chmod=755 ./script17b.sh .
+
+ENTRYPOINT ["./script17b.sh"]
