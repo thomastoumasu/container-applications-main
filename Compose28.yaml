@@ -1,0 +1,40 @@
+services:
+  frontend:
+    image: frontend
+    build:
+      context: ./example-frontend
+    container_name: frontend
+  redis:
+    image: redis:8.2-alpine
+    container_name: redis
+  db:
+    image: postgres:17
+    restart: unless-stopped
+    environment:
+      - POSTGRES_PASSWORD=example
+    volumes:
+      - ./example-backend/database:/var/lib/postgresql/data
+    container_name: db
+  backend:
+    image: backend
+    build:
+      context: ./example-backend
+    environment:
+      - REDIS_HOST=redis
+      - POSTGRES_HOST=db # (port will default to 5432 the default for Postgres)
+      - POSTGRES_PASSWORD=example
+    container_name: backend
+    depends_on:
+      - db
+  reverse-proxy:
+    image: nginx:1.25-alpine
+    volumes:
+      - ./nginx28.conf:/etc/nginx/nginx.conf
+    ports:
+      - 8080:80
+    depends_on:
+      - frontend
+      - backend
+# docker compose -f Compose28.yaml up
+
+# to scan the ports and verify nothing on the host is open except 8080: docker run -it --rm --network host networkstatic/nmap localhost
