@@ -1,0 +1,25 @@
+# The first FROM is now a stage called build-stage
+FROM node:16 AS build-stage 
+
+WORKDIR /usr/src/app
+
+COPY . .
+
+# RUN echo "node version is $(node -v)"
+
+RUN npm install
+
+# ENV VITE_BACKEND_URL=http://localhost:3000/ 
+
+RUN npm run build
+
+FROM nginx:1.25-alpine
+
+COPY --from=build-stage /usr/src/app/build /usr/share/nginx/html
+
+# no need for CMD, nginx starts up on its own
+
+# docker build -t frontend . && docker run --name frontend --rm -p 3000:80 frontend
+# docker build --target build-stage -t frontend . # to stop at the build stage
+# to echo: docker build --progress=plain --no-cache -t frontend .
+# docker run -it --name frontend --rm -p 5173:80 frontend sh

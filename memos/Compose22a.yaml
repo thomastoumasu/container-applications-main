@@ -1,0 +1,6 @@
+services:
+  whoami:
+    image: jwilder/whoami
+    ports:
+      - 8000
+# docker compose -f Compose22a.yaml up

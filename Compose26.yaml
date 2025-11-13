@@ -1,0 +1,39 @@
+services:
+  frontend:
+    image: frontend
+    build:
+      context: ./example-frontend
+    ports:
+      - 3000:3000
+    container_name: frontend
+  redis:
+    image: redis:8.2-alpine
+    container_name: redis
+  db:
+    image: postgres:17
+    restart: unless-stopped
+    environment:
+      - POSTGRES_PASSWORD=thepassword
+      - POSTGRES_USER=theuser
+    volumes:
+      - ./example-backend/database:/var/lib/postgresql/data
+    container_name: db
+  backend:
+    image: backend
+    build:
+      context: ./example-backend
+    ports:
+      - 8080:80
+    environment:
+      - REQUEST_ORIGIN=http://localhost:3000
+      - REDIS_HOST=redis
+      - POSTGRES_HOST=db # (port will default to 5432 the default for Postgres)
+      - POSTGRES_PASSWORD=thepassword
+      - POSTGRES_USER=theuser
+    container_name: backend
+    depends_on:
+      - db
+# docker compose -f Compose26.yaml up
+
+# docker run --name backend --rm -p 8080:80 -e REDIS_HOST=redis://redis:6379 backend -e POSTGRES_PASSWORD: password
+# docker container diff $(docker compose -f Compose26.yaml ps -q db)

@@ -1,0 +1,10 @@
+
+GET http://localhost:8080/api/messages
+
+### careful with POST, do not add an empty line before the headers
+POST http://localhost:8080/api/messages
+Content-Type: application/json
+
+{
+  "body": "drink more coffee"
+}

@@ -1,0 +1,7 @@
+services:
+  webs:
+    image: devopsdockeruh/simple-web-service
+    volumes:
+      - ./logs/text.log:/usr/src/app/text.log
+    container_name: webs
+# docker compose -f Compose21.yaml up
