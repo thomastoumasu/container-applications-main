@@ -4,9 +4,12 @@ on:
   push:
     branches:
       - main
+    paths:
+      - "express-app/**"
+      - ".github/workflows/pipeline.yml"
 
 jobs:
-  build: # name of the job
+  build-and-push-image: # name of the job
     runs-on: ubuntu-latest
 
     steps:
