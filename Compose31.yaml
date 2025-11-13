@@ -1,0 +1,19 @@
+services:
+  watchtower:
+    image: containrrr/watchtower
+    environment:
+      - WATCHTOWER_POLL_INTERVAL=60
+      # - WATCHTOWER_LABEL_ENABLE
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    container_name: watchtower
+  express-app:
+    image: thomastoumasu/container-ex-express-app:latest
+    build:
+      context: ./express-app
+    ports:
+      - 8000:8080
+    # labels:
+    #   - "com.centurylinklabs.watchtower.enable=true"
+    container_name: express-app
+# docker compose -f Compose31.yaml up
