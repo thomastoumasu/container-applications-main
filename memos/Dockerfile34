@@ -1,0 +1,12 @@
+FROM docker:25-git
+
+WORKDIR /usr/local/bin
+
+COPY --chmod=755 builder .
+# or same: COPY builder builder
+# RUN chmod +x builder
+
+ENTRYPOINT ["./builder"] 
+
+# docker build -f Dockerfile34 -t builder .  
+# docker run -e DOCKER_PWD=XXX --rm --name builder -e DOCKER_USER=thomastoumasu@protonmail.com -v /var/run/docker.sock:/var/run/docker.sock builder thomastoumasu/container-applications-main/ thomastoumasu/container-ex-express-app
